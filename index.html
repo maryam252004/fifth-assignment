@@ -1,0 +1,217 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fifth Assignment</title>
+    <style>
+        body {
+            background-color: rgb(240, 229, 233);
+            display: flex;
+            justify-content: center;
+            padding-top: 10px;
+            margin: 0px;
+            font-family: Arial, sans-serif;
+        }
+
+        .title {
+            text-align: center;
+            padding: 10px;
+            color: rgb(178, 17, 17);
+            margin: 15px;
+        }
+
+        /* FIX: container now has proper flex-direction: column and a fixed width */
+        .container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 60px 60px;
+    width: 500px;
+    gap: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 8px 12px;
+            margin-top: 5px;
+            border: 1px solid #28786c;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        input[type="text"]:hover,
+        input[type="password"]:hover {
+            border-color: brown;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        /* FIX: option-group for gender in a row */
+        .option-group {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            margin-top: 5px;
+            align-items: center;
+        }
+
+        /* FIX: option for hobbies in a column */
+        .option {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 20px 40px;
+            background-color: rgb(225, 225, 19);
+            color: rgb(196, 33, 33);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        small {
+    margin-top: 3px;
+    display: block;
+}
+
+        input[type="submit"]:hover {
+            background-color: rgb(14, 11, 11);
+        }
+    </style>
+    <script>
+        function submitform()
+        { 
+            document.getElementById("nameError").innerText = "";
+            document.getElementById("emailError").innerText = "";
+            document.getElementById("passwordError").innerText = "";
+            document.getElementById("cityError").innerText = "";
+            document.getElementById("genderError").innerText = "";
+            document.getElementById("hobbiesError").innerText = "";
+    let genderSelected = document.querySelector('input[name="gender"]:checked');
+    let hobbiesSelected = document.querySelectorAll('input[name="hobbies"]:checked');
+
+
+
+          let name = document.getElementById("name").value;
+          let email = document.getElementById("email").value;
+          let password = document.getElementById("password").value;
+          let city = document.getElementById("city").value;
+          let isValid = true;
+        
+          if(name == ""){
+            document.getElementById("nameError").innerText= "name is required";
+            isValid = false;
+          }
+          else if(name.length < 3){
+             document.getElementById("nameError").innerText= "name must have atleast 3 characters";
+            isValid = false;
+          }
+          if (email == "") 
+           {
+         document.getElementById("emailError").innerText="Email is required";
+        isValid = false;
+           }
+           else if (!email.includes("@"))
+             {
+         document.getElementById("emailError").innerText ="email must contain @";
+        isValid = false;
+            }
+          if (password == "")
+              {
+        document.getElementById("passwordError").innerText ="password is required";
+        isValid = false;
+    }
+   
+
+          else if(password.length < 5)
+          {
+            document.getElementById("passwordError").innerText="password must have atleast 5 characters"
+          isValid = false;
+          }
+          if (city == "") {
+        document.getElementById("cityError").innerText = "Please select a city";
+        isValid = false;
+           }
+            if (!genderSelected) {
+        document.getElementById("genderError").innerText = "Please select a gender";
+        isValid = false;
+    }
+     if (hobbiesSelected.length == 0) {
+        document.getElementById("hobbiesError").innerText = "Please select at least one hobby";
+        isValid = false;
+     }
+     if(isValid)
+          {
+            alert("hello " + name +" form submitted successfully")
+          }
+        return false;
+
+          
+        }
+    </script>
+
+
+
+</head>
+<body>
+   
+    
+      <div class="container">
+    <div class="title">
+        <h2><b>STUDENT REGISTRATION FORM</b></h2>
+    </div>
+
+    <form action="#" method="get" onsubmit="return submitform()">
+
+        <label>Name:</label>
+        <input type="text" name="name" id="name">
+        <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(248, 73, 19);"id="nameError"></small>
+
+        <label>Email:</label>
+        <input type="text" name="email" id="email">
+       <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(211, 23, 17);" id="emailError"></small>  
+
+
+        <label>Password:</label>
+        <input type="password" name="password" id="password">
+         <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(227, 87, 27);"id="passwordError"></small>
+
+        <label>City:</label>
+        <input type="text" name="city" id="city" >
+        <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(211, 13, 13);"id="cityError"></small>
+
+        <label>Gender:</label>
+        <div class="option-group">
+            <input type="radio" value="Male" name="gender"> Male
+            <input type="radio" value="Female" name="gender"> Female
+            <input type="radio" value="Other" name="gender"> Other
+        </div>
+         <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(178, 17, 17);"id="genderError"></small>
+
+        <label>Hobbies:</label>
+        <div class="option">
+            <span><input type="checkbox" value="Reading" name="hobbies"> Reading</span>
+            <span><input type="checkbox" value="Sport" name="hobbies"> Sport</span>
+            <span><input type="checkbox" value="Music" name="hobbies"> Music</span>
+            <span><input type="checkbox" value="Coding" name="hobbies"> Coding</span>
+        </div>
+         <span style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(178, 17, 17);"id="hobbiesError"></span>
+
+        <input type="submit" value="Submit">
+
+    </form>
+</div>
