@@ -83,93 +83,152 @@
             cursor: pointer;
             font-size: 15px;
         }
+        input[type="submit"]:disabled
+        {
+              background-color: #cccccc;
+              color: #ededed;
+              cursor: not-allowed;     
+                    opacity: 0.6;
+        }
+
+        
+              
+
         small {
     margin-top: 3px;
     display: block;
 }
 
-        input[type="submit"]:hover {
-            background-color: rgb(14, 11, 11);
-        }
+       .hint{
+        font-style: 12px;
+        color: rgb(47, 6, 91);
+        margin-top: 3px;
+
+       }
     </style>
     <script>
-        function submitform()
-        { 
-            document.getElementById("nameError").innerText = "";
-            document.getElementById("emailError").innerText = "";
-            document.getElementById("passwordError").innerText = "";
-            document.getElementById("cityError").innerText = "";
-            document.getElementById("genderError").innerText = "";
-            document.getElementById("hobbiesError").innerText = "";
-    let genderSelected = document.querySelector('input[name="gender"]:checked');
-    let hobbiesSelected = document.querySelectorAll('input[name="hobbies"]:checked');
+        function validateAll()
+        { let allValid=true;
+
+    //         document.getElementById("nameError").innerText = "";
+    //         document.getElementById("emailError").innerText = "";
+    //         document.getElementById("passwordError").innerText = "";
+    //         document.getElementById("cityError").innerText = "";
+    //         document.getElementById("genderError").innerText = "";
+    //         document.getElementById("hobbiesError").innerText = "";
+    // let genderSelected = document.querySelector('input[name="gender"]:checked');
+    // let hobbiesSelected = document.querySelectorAll('input[name="hobbies"]:checked');
 
 
 
-          let name = document.getElementById("name").value;
-          let email = document.getElementById("email").value;
-          let password = document.getElementById("password").value;
-          let city = document.getElementById("city").value;
-          let isValid = true;
-        
+    //       let name = document.getElementById("name").value;
+    //       let email = document.getElementById("email").value;
+    //       let password = document.getElementById("password").value;
+    //       let city = document.getElementById("city").value;
+    //       let isValid = true;
+        const name = document.getElementById("name").value;
           if(name == ""){
             document.getElementById("nameError").innerText= "name is required";
-            isValid = false;
+            allValid = false;
           }
           else if(name.length < 3){
              document.getElementById("nameError").innerText= "name must have atleast 3 characters";
-            isValid = false;
+            allValid = false;
           }
+          else{
+             document.getElementById("nameError").innerText="";
+          }
+           const email = document.getElementById("email").value;
           if (email == "") 
            {
          document.getElementById("emailError").innerText="Email is required";
-        isValid = false;
+        allValid = false;
            }
            else if (!email.includes("@"))
              {
          document.getElementById("emailError").innerText ="email must contain @";
-        isValid = false;
+        allValid = false;
             }
+            else if(!email.endsWith(".com"))
+            {
+                document.getElementById("emailError").innerText ="email must contain .com";
+                allValid=false;
+            }
+            else{
+                document.getElementById("emailError").innerText ="";
+            }
+             const password = document.getElementById("password").value;
           if (password == "")
               {
         document.getElementById("passwordError").innerText ="password is required";
-        isValid = false;
+        allValid = false;
+        
     }
-   
-
-          else if(password.length < 5)
+          else if(password.length <8)
           {
-            document.getElementById("passwordError").innerText="password must have atleast 5 characters"
-          isValid = false;
+            document.getElementById("passwordError").innerText="password must have atleast 8 characters"
+          allValid = false;
           }
+          else{
+            const letters=password.split("").filter(c=>/[a-zA-Z]/.test(c)).length;
+            const digits=password.split("").filter(c=>/[0-9]/.test(c)).length;
+            const special = password.split('').filter(c => /[^a-zA-Z0-9]/.test(c)).length;
+          if(letters <3){ 
+          document.getElementById("passwordError").innerText="password must contain atleast 3 alphabet letters(found " + letters + ").";
+          allValid=false;
+          }
+          else if(digits <4){
+          document.getElementById("passwordError").innerText="password must contain atleast 4 digits(found "+ digits +").";
+          allValid=false;
+          }
+          else if(special <1)
+          {
+            document.getElementById("passwordError").innerText="password must contain atleast 1 specail character(found "+ letters +").";
+          allValid=false; 
+          }
+          else{
+             document.getElementById("passwordError").innerText="";
+          }
+        }
+           let city = document.getElementById("city").value;
           if (city == "") {
         document.getElementById("cityError").innerText = "Please select a city";
-        isValid = false;
+        allValid = false;
            }
+           else{
+            document.getElementById("cityError").innerText="";
+           }
+            let genderSelected = document.querySelector('input[name="gender"]:checked');
             if (!genderSelected) {
         document.getElementById("genderError").innerText = "Please select a gender";
-        isValid = false;
+        allValid = false;
     }
-     if (hobbiesSelected.length == 0) {
+    else{
+        document.getElementById("genderError").innerText="";
+    }
+    let hobbiesSelected = document.querySelectorAll('input[name="hobbies"]:checked');
+    if (hobbiesSelected.length == 0) {
         document.getElementById("hobbiesError").innerText = "Please select at least one hobby";
-        isValid = false;
+        allValid = false;
      }
-     if(isValid)
-          {
-            alert("hello " + name +" form submitted successfully")
-          }
-        return false;
-
-          
-        }
+     else{
+        document.getElementById("hobbiesError").innerText="";
+     }
+     document.getElementById("submitBtn").disabled=!allValid;
+     return allValid;
+    }
+    function submitform()
+    {
+        if(!validateAll())return false;
+        const name=document.getElementById("name").value;
+        window.location.href = "success.html?name=" + name;
+         return false;
+    }
     </script>
-
-
-
 </head>
+
+
 <body>
-   
-    
       <div class="container">
     <div class="title">
         <h2><b>STUDENT REGISTRATION FORM</b></h2>
@@ -178,40 +237,43 @@
     <form action="#" method="get" onsubmit="return submitform()">
 
         <label>Name:</label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" oninput="validateAll()" placeholder="Exactly 3 characters">
         <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(248, 73, 19);"id="nameError"></small>
 
         <label>Email:</label>
-        <input type="text" name="email" id="email">
+        <input type="text" name="email" id="email" oninput="validateAll()" placeholder="example@domain.com">
        <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(211, 23, 17);" id="emailError"></small>  
 
 
         <label>Password:</label>
-        <input type="password" name="password" id="password">
+        <div class="field">
+        <input type="password" name="password" id="password" oninput="validateAll()" placeholder="e.g. abc1234!">
          <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(227, 87, 27);"id="passwordError"></small>
+         <div class="hint">8 char:3 letters + 4 digits + 1 special character</div>
+         <div class="error" id="password Error"</div>
 
         <label>City:</label>
-        <input type="text" name="city" id="city" >
+        <input type="text" name="city" id="city" oninput="validateAll()" placeholder="Your city"> 
         <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(211, 13, 13);"id="cityError"></small>
 
         <label>Gender:</label>
         <div class="option-group">
-            <input type="radio" value="Male" name="gender"> Male
-            <input type="radio" value="Female" name="gender"> Female
-            <input type="radio" value="Other" name="gender"> Other
+            <input type="radio" value="Male" name="gender" onchange="validateAll()"> Male
+            <input type="radio" value="Female" name="gender" onchange="validateAll()"> Female
+            <input type="radio" value="Other" name="gender" onchange="validateAll()"> Other
         </div>
          <small style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(178, 17, 17);"id="genderError"></small>
 
         <label>Hobbies:</label>
         <div class="option">
-            <span><input type="checkbox" value="Reading" name="hobbies"> Reading</span>
-            <span><input type="checkbox" value="Sport" name="hobbies"> Sport</span>
-            <span><input type="checkbox" value="Music" name="hobbies"> Music</span>
-            <span><input type="checkbox" value="Coding" name="hobbies"> Coding</span>
+            <span><input type="checkbox" value="Reading" name="hobbies" onchange="validateAll()"> Reading</span>
+            <span><input type="checkbox" value="Sport" name="hobbies" onchange="validateAll()"> Sport</span>
+            <span><input type="checkbox" value="Music" name="hobbies" onchange="validateAll()"> Music</span>
+            <span><input type="checkbox" value="Coding" name="hobbies" onchange="validateAll()"> Coding</span>
         </div>
          <span style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color: rgb(178, 17, 17);"id="hobbiesError"></span>
 
-        <input type="submit" value="Submit">
+        <input type="submit" id=submitBtn value="Submit"disabled>
 
     </form>
 </div>

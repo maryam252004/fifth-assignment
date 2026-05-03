@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Success</title>
+    <style>
+        body {
+            background-color: rgb(240, 229, 233);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            background-color: white;
+            padding: 50px 60px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: rgb(178, 17, 17);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #444;
+            font-size: 1.1rem;
+        }
+
+        .tick {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script>
+        // URL se name nikalo
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get("name");
+            document.getElementById("userName").innerText = name;
+        }
+    </script>
+</head>
+<body>
+    <div class="box">
+        <div class="tick">✅</div>
+        <h1>Thanks, <span id="userName"></span>!</h1>
+        <p>Your form has been submitted successfully.</p>
+    </div>
+</body>
+</html>
